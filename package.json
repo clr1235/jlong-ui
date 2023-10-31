@@ -1,0 +1,54 @@
+{
+  "name": "jlong-ui",
+  "version": "1.0.39",
+  "private": false,
+  "description": "",
+  "scripts": {
+    "dev": "pnpm -C play dev",
+    "docs:dev": "pnpm run -C docs dev",
+    "docs:build": "pnpm run -C docs build",
+    "docs:preview": "pnpm run -C docs preview",
+    "clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
+    "clean:dist": "rimraf dist",
+    "stub": "pnpm run -r --parallel stub",
+    "build": "pnpm run postinstall && pnpm run -C internal/build start",
+    "build:theme": "pnpm run -C packages/theme-chalk build",
+    "postinstall": "pnpm stub"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@8.9.0",
+  "workspaces": [
+    "packages/*",
+    "play",
+    "docs",
+    "internal"
+  ],
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.4.0",
+    "@vitejs/plugin-vue-jsx": "^3.0.2",
+    "rimraf": "^5.0.5",
+    "sass": "^1.69.4",
+    "typescript": "^5.0.2",
+    "vue": "3.2.47"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.47"
+  },
+  "dependencies": {
+    "@element-plus/components": "^0.0.5",
+    "@element-plus/directives": "^0.0.5",
+    "@element-plus/hooks": "^0.0.5",
+    "@element-plus/icons-vue": "^2.1.0",
+    "@jlong-ui/build": "workspace:*",
+    "@jlong-ui/components": "workspace:*",
+    "@jlong-ui/constants": "workspace:*",
+    "@jlong-ui/hooks": "workspace:*",
+    "@jlong-ui/theme-chalk": "workspace:*",
+    "@jlong-ui/utils": "workspace:*",
+    "jlong-ui": "workspace:^",
+    "lodash-unified": "^1.0.3",
+    "unbuild": "^2.0.0"
+  }
+}

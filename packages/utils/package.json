@@ -1,0 +1,9 @@
+{
+  "name": "@jlong-ui/utils",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "index.ts",
+  "peerDependencies": {
+    "vue": "^3.2.47"
+  }
+}

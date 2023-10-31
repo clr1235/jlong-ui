@@ -1,0 +1,24 @@
+{
+  "name": "@jlong-ui/components",
+  "version": "1.0.0",
+  "description": "all components are settled here",
+  "main": "index.ts",
+  "module": "index.ts",
+  "unpkg": "index.js",
+  "jsdelivr": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^3.2.47"
+  },
+  "dependencies": {
+    "@element-plus/components": "^0.0.5",
+    "@element-plus/hooks": "^0.0.5",
+    "@jlong-ui/constants": "workspace:*",
+    "@jlong-ui/hooks": "workspace:*",
+    "@jlong-ui/theme-chalk": "workspace:*",
+    "fast-glob": "3.2.11"
+  }
+}

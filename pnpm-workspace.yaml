@@ -1,0 +1,6 @@
+# 定义工作区的生效区间
+packages:
+  - packages/*
+  - docs
+  - play
+  - internal/*
