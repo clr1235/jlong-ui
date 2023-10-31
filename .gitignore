@@ -19,3 +19,6 @@ packages/jlong-ui/version.ts
 cypress/screenshots/*
 cypress/videos/*
 tmp
+
+
+docs/.vitepress/cache
