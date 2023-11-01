@@ -20,5 +20,6 @@ cypress/screenshots/*
 cypress/videos/*
 tmp
 
+**/dist
 
 docs/.vitepress/cache

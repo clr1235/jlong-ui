@@ -1,58 +1,100 @@
 {
-  "name": "jlong-ui",
-  "version": "1.0.39",
-  "private": false,
-  "description": "",
-  "scripts": {
-    "dev": "pnpm -C play dev",
-    "docs:dev": "pnpm run -C docs dev",
-    "docs:build": "pnpm run -C docs build",
-    "docs:preview": "pnpm run -C docs preview",
-    "clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
-    "clean:dist": "rimraf dist",
-    "stub": "pnpm run -r --parallel stub",
-    "build": "pnpm run -C internal/build start",
-    "build:theme": "pnpm run -C packages/theme-chalk build",
-    "postinstall": "pnpm stub",
-    "preinstall": "npx only-allow pnpm"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@8.9.0",
-  "workspaces": [
-    "packages/*",
-    "play",
-    "docs",
-    "internal"
-  ],
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^4.4.0",
-    "@vitejs/plugin-vue-jsx": "^3.0.2",
-    "rimraf": "^5.0.5",
-    "sass": "^1.69.4",
-    "typescript": "^5.0.2",
-    "vue": "3.2.47"
-  },
-  "peerDependencies": {
-    "vue": "^3.2.47"
-  },
-  "dependencies": {
-    "@element-plus/components": "^0.0.5",
-    "@element-plus/directives": "^0.0.5",
-    "@element-plus/hooks": "^0.0.5",
-    "@element-plus/icons-vue": "^2.1.0",
-    "@jlong-ui/build": "workspace:*",
-    "@jlong-ui/components": "workspace:*",
-    "@jlong-ui/constants": "workspace:*",
-    "@jlong-ui/hooks": "workspace:*",
-    "@jlong-ui/theme-chalk": "workspace:*",
-    "@jlong-ui/utils": "workspace:*",
-    "jlong-ui": "workspace:^",
-    "lodash-unified": "^1.0.3",
-    "unbuild": "^2.0.0"
-  },
-  "engines": {
-    "node": ">=16.13.0"
-  }
+	"name": "jlong-ui",
+	"version": "1.0.39",
+	"private": false,
+	"description": "",
+	"scripts": {
+		"dev": "pnpm -C play dev",
+		"docs:dev": "pnpm run -C docs dev",
+		"docs:build": "pnpm run -C docs build",
+		"docs:preview": "pnpm run -C docs preview",
+		"clean": "pnpm run clean:dist && pnpm run -r --parallel clean",
+		"clean:dist": "rimraf dist",
+		"stub": "pnpm run -r --parallel stub",
+		"build": "pnpm run -C internal/build start",
+		"build:theme": "pnpm run -C packages/theme-chalk build",
+		"postinstall": "pnpm stub",
+		"preinstall": "npx only-allow pnpm",
+		"prepare": "husky install",
+		"lint:lint-staged": "lint-staged",
+		"lint:eslint": "eslint  --fix --ext .ts,.js,.vue ./src ",
+		"lint:prettier": "prettier --write \"**/*.{js,cjs,ts,json,tsx,css,less,scss,vue,html,md}\"",
+		"lint:stylelint": "stylelint  \"**/*.{css,scss,vue}\" --fix"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@8.9.0",
+	"workspaces": [
+		"packages/*",
+		"play",
+		"docs",
+		"internal"
+	],
+	"devDependencies": {
+		"@commitlint/cli": "^18.2.0",
+		"@commitlint/config-conventional": "^18.1.0",
+		"@vitejs/plugin-vue": "^4.4.0",
+		"@vitejs/plugin-vue-jsx": "^3.0.2",
+		"eslint": "^8.52.0",
+		"eslint-config-prettier": "^9.0.0",
+		"eslint-plugin-prettier": "^5.0.1",
+		"eslint-plugin-vue": "^9.18.1",
+		"husky": "^8.0.0",
+		"lint-staged": "^15.0.2",
+		"prettier": "^3.0.3",
+		"rimraf": "^5.0.5",
+		"sass": "^1.69.4",
+		"stylelint": "^15.11.0",
+		"stylelint-config-html": "^1.1.0",
+		"stylelint-config-recess-order": "^4.3.0",
+		"stylelint-config-recommended-scss": "^13.0.0",
+		"stylelint-config-recommended-vue": "^1.5.0",
+		"stylelint-config-standard": "^34.0.0",
+		"stylelint-config-standard-scss": "^11.0.0",
+		"typescript": "^5.0.2",
+		"vue": "3.2.47"
+	},
+	"peerDependencies": {
+		"vue": "^3.2.47"
+	},
+	"dependencies": {
+		"@element-plus/components": "^0.0.5",
+		"@element-plus/directives": "^0.0.5",
+		"@element-plus/hooks": "^0.0.5",
+		"@element-plus/icons-vue": "^2.1.0",
+		"@jlong-ui/build": "workspace:*",
+		"@jlong-ui/components": "workspace:*",
+		"@jlong-ui/constants": "workspace:*",
+		"@jlong-ui/hooks": "workspace:*",
+		"@jlong-ui/theme-chalk": "workspace:*",
+		"@jlong-ui/utils": "workspace:*",
+		"jlong-ui": "workspace:^",
+		"lodash-unified": "^1.0.3",
+		"unbuild": "^2.0.0"
+	},
+	"lint-staged": {
+		"*.{js,ts}": [
+			"eslint --fix",
+			"prettier --write"
+		],
+		"*.{cjs,json}": [
+			"prettier --write"
+		],
+		"*.{vue,html}": [
+			"eslint --fix",
+			"prettier --write",
+			"stylelint --fix"
+		],
+		"*.{scss,css}": [
+			"stylelint --fix",
+			"prettier --write"
+		],
+		"*.md": [
+			"prettier --write"
+		]
+	},
+	"engines": {
+		"node": ">=16.13.0"
+	}
 }
