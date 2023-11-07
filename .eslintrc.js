@@ -5,22 +5,19 @@ module.exports = {
 		es2021: true,
 		node: true,
 	},
-	parser: 'vue-eslint-parser',
+	parser: '@typescript-eslint/parser',
 	extends: [
 		// 参考vuejs官方的eslint配置： https://eslint.vuejs.org/user-guide/#usage
 		'plugin:vue/vue3-recommended',
 		'eslint:recommended',
+
+		'plugin:@typescript-eslint/recommended',
+
 		// 使用prettier的推荐规则
 		'prettier',
 		'plugin:prettier/recommended',
 	],
-	parserOptions: {
-		ecmaVersion: 'latest',
-		sourceType: 'module',
-		createDefaultProgram: false,
-		extraFileExtensions: ['.vue'],
-	},
-	plugins: ['vue'],
+	plugins: ['vue', '@typescript-eslint'],
 	rules: {
 		// 对应上边的plugin:vue/vue3-recommended
 		'vue/multi-word-component-names': 'off', // 关闭组件名必须多字： https://eslint.vuejs.org/rules/multi-word-component-names.html
@@ -49,10 +46,16 @@ module.exports = {
 				math: 'always',
 			},
 		],
+
 		// 对应上边的 eslint:recommended
 		'no-var': 2,
-		'no-unused-vars': 1,
-		indent: [2, 'tab'], // 强制使用一致的缩进
+		'no-unused-vars': 'off',
+		// indent: [2, 'tab'], // 强制使用一致的缩进
+
+		// 对应上边的 plugin:@typescript-eslint/recommended
+		'@typescript-eslint/no-unused-vars': 'off',
+		'@typescript-eslint/no-explicit-any': 'off', // 允许使用any
+
 		// 对应上边的 prettier, plugin:prettier/recommended   这边的配置生效高于.prettier.config文件
 		'prettier/prettier': [
 			'error',
@@ -66,11 +69,47 @@ module.exports = {
 			},
 		],
 	},
-	// eslint不能对html文件生效
+	// 覆盖
 	overrides: [
 		{
 			files: ['*.html'],
 			processor: 'vue/.vue',
+		},
+		{
+			files: ['*.js', '*.ts', '*.vue'],
+			rules: {
+				'no-undef': 'off',
+			},
+		},
+		{
+			files: ['*.js'],
+			rules: {
+				'@typescript-eslint/no-var-requires': 'off',
+			},
+		},
+		{
+			files: ['*.vue'],
+			parser: 'vue-eslint-parser',
+			parserOptions: {
+				parser: '@typescript-eslint/parser',
+				extraFileExtensions: ['.vue'],
+				ecmaVersion: 'latest',
+				createDefaultProgram: false,
+				ecmaFeatures: {
+					jsx: true,
+				},
+			},
+			rules: {
+				'no-undef': 'off',
+			},
+		},
+		{
+			files: ['**/*.md/*.js', '**/*.md/*.ts'],
+			rules: {
+				'no-console': 'off',
+				'import/no-unresolved': 'off',
+				'@typescript-eslint/no-unused-vars': 'off',
+			},
 		},
 	],
 	// https://eslint.org/docs/latest/use/configure/language-options#specifying-globals
