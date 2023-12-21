@@ -3,28 +3,22 @@ import { epPackage, getPackageDependencies } from './index'
 import type { OutputOptions, RollupBuild } from 'rollup'
 
 export const generateExternal = async (options: { full: boolean }) => {
-    const { dependencies, peerDependencies } = getPackageDependencies(epPackage)
-    console.log(epPackage, 'epPackage=-=-=-=IIIIIIIIIII')
-    console.log(dependencies, 'dependencies==s=s=s=s=||||||||||', peerDependencies)
-    return (id: string) => {
-        const packages: string[] = [...peerDependencies]
-        if (!options.full) {
-            packages.push('@vue', ...dependencies)
-        }
-        return [...new Set(packages)].some(
-            (pkg) => id === pkg || id.startsWith(`${pkg}/`)
-        )
-    }
+	const { dependencies, peerDependencies } = getPackageDependencies(epPackage)
+	// console.log(epPackage, 'epPackage=-=-=-=IIIIIIIIIII')
+	// console.log(dependencies, 'dependencies==s=s=s=s=||||||||||', peerDependencies)
+	return (id: string) => {
+		const packages: string[] = [...peerDependencies]
+		if (!options.full) {
+			packages.push('@vue', ...dependencies)
+		}
+		return [...new Set(packages)].some((pkg) => id === pkg || id.startsWith(`${pkg}/`))
+	}
 }
 
 export function writeBundles(bundle: RollupBuild, options: OutputOptions[]) {
-  return Promise.all(options.map((option) => bundle.write(option)))
+	return Promise.all(options.map((option) => bundle.write(option)))
 }
 
-export function formatBundleFilename(
-  name: string,
-  minify: boolean,
-  ext: string
-) {
-  return `${name}${minify ? '.min' : ''}.${ext}`
+export function formatBundleFilename(name: string, minify: boolean, ext: string) {
+	return `${name}${minify ? '.min' : ''}.${ext}`
 }

@@ -14,7 +14,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
  * 支持TS和Volar插件
  * 支持多种打包器
  * 同时支持vite3/4、webpack、vue cli、rollup、esbuild等。使用unplugin驱动
- **/ 
+ **/
 import VueMacros from 'unplugin-vue-macros/rollup'
 /**
  *  该插件用于解析Node.js模块，它可以让Rollup打包时使用Node.js模块（包括外部依赖），而不仅仅是ES模块。
@@ -35,74 +35,72 @@ import { buildConfigEntries, target } from '../build-info'
 import type { OutputOptions } from 'rollup'
 
 export const buildModules = async () => {
-    const input = excludeFiles(
-        await glob('**/*.{js,ts,vue}', {
-            cwd: pkgRoot,
-            absolute: true,
-            onlyFiles: true,
-        })
-    )
-    const aaa = await generateExternal({ full: false })
-    // console.log(input, 'input<>////////', epRoot)
-    /* 
+	const input = excludeFiles(
+		await glob('**/*.{js,ts,vue}', {
+			cwd: pkgRoot,
+			absolute: true,
+			onlyFiles: true,
+		})
+	)
+	// console.log(input, 'input<>////////', epRoot)
+	/* 
         rollu函数接收一个输入选项对象作为参数，返回一个Promise，该Promise解析为一个bundle对象，
         rollup将构建模块图并执行tree-shaking优化，但不会生成任何输出。
         rollup()打包之后生成的bundle对象可以多次调用bundle.generate并使用不同的输出选项对象来生成不同的产物到内存中。
         如果想要将生成的产物写入到磁盘中，可以使用bundle.write()
     */
-   console.log(aaa, '三方库-s-s-s-s')
-    const bundle = await rollup({
-        input,
-        plugins: [
-            JlongUiAlias(),
-            VueMacros({
-                setupComponent: false,
-                setupSFC: false,
-                plugins: {
-                    vue: vue({
-                        isProduction: false,
-                    }),
-                    vueJsx: vueJsx(),
-                },
-            }),
-            nodeResolve({
-                // 指定插件在以下扩展名的文件中运行
-                extensions: ['.mjs', '.js', '.json', '.ts'],
-            }),
-            commonjs(),
-            esbuild({
-                sourceMap: true,
-                target,
-                loaders: {
-                    '.vue': 'ts',
-                },
-            }),
-        ],
-        // 将第三方库从打包文件中移除
-        external: await generateExternal({ full: false }),
-        treeshake: false,
-    })
-    // 根据不同的模块配置将打包产物写入到磁盘中
-    await writeBundles(
-        bundle,
-        buildConfigEntries.map(([module, config]): OutputOptions => {
-            console.log(module, 'module====/////', config)
-            return {
-                // 用于指定生成的bundle的格式
-                format: config.format,
-                // 指定生成的chunk放置在哪个目录，如果生成一个以上的chunk，该选项必需。否则可以用file选项代替
-                dir: config.output.path,
-                // 慎用选项，用于指定导出模式。named值适用于命名导出的情况；
-                // 次选项的值不同将影响用户使用你的bundle产物的方式。具体参考 https://cn.rollupjs.org/configuration-options/#output-exports
-                exports: module === 'cjs' ? 'named' : undefined,
-                // 该选项将使用原始模块名作为文件名，为所有模块创建单独的chunk，而不是创建尽可能少的chunk。需配合dir选项一起使用
-                preserveModules: true,
-                preserveModulesRoot: epRoot,
-                // 该选项值为true将生成一个独立的sourcemap文件
-                sourcemap: true,
-                // 用于指定chunks的入口文件模式
-                entryFileNames: `[name].${config.ext}`,
-            }
-        })
-    )
+	const bundle = await rollup({
+		input,
+		plugins: [
+			JlongUiAlias(),
+			VueMacros({
+				setupComponent: false,
+				setupSFC: false,
+				plugins: {
+					vue: vue({
+						isProduction: false,
+					}),
+					vueJsx: vueJsx(),
+				},
+			}),
+			nodeResolve({
+				// 指定插件在以下扩展名的文件中运行
+				extensions: ['.mjs', '.js', '.json', '.ts'],
+			}),
+			commonjs(),
+			esbuild({
+				sourceMap: true,
+				target,
+				loaders: {
+					'.vue': 'ts',
+				},
+			}),
+		],
+		// 将第三方库从打包文件中移除 也就是 匹配需要排除在 bundle 外部的模块
+		external: await generateExternal({ full: false }),
+		treeshake: false,
+	})
+	// 根据不同的模块配置将打包产物写入到磁盘中
+	await writeBundles(
+		bundle,
+		buildConfigEntries.map(([module, config]): OutputOptions => {
+			// console.log(module, 'module====/////', config)
+			return {
+				// 用于指定生成的bundle的格式
+				format: config.format,
+				// 指定生成的chunk放置在哪个目录，如果生成一个以上的chunk，该选项必需。否则可以用file选项代替
+				dir: config.output.path,
+				// 慎用选项，用于指定导出模式。named值适用于命名导出的情况；
+				// 次选项的值不同将影响用户使用你的bundle产物的方式。具体参考 https://cn.rollupjs.org/configuration-options/#output-exports
+				exports: module === 'cjs' ? 'named' : undefined,
+				// 该选项将使用原始模块名作为文件名，为所有模块创建单独的chunk，而不是创建尽可能少的chunk。需配合dir选项一起使用
+				preserveModules: true,
+				preserveModulesRoot: epRoot,
+				// 该选项值为true将生成一个独立的sourcemap文件
+				sourcemap: true,
+				// 用于指定chunks的入口文件模式
+				entryFileNames: `[name].${config.ext}`,
+			}
+		})
+	)
 }
